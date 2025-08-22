@@ -1,0 +1,10 @@
+# Specify the required Python packages and their versions
+torch
+
+numpy
+pandas
+
+scikit-learn
+tiktoken
+
+-e .
