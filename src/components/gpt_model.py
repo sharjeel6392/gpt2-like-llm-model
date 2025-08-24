@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
 from src.constants import vocab_size, embedding_dim, context_length, drop_rate, n_layers
-from transformer_block import DummyTransformerBlock
-from layer_normalization import LayerNormalize
+from src.components.transformer_block import TransformerBlock
+from src.components.layer_normalization import LayerNormalize
 
 
 
@@ -40,10 +40,10 @@ class GPTMODEL(nn.Module):
         self.drop_emb = nn.Dropout(drop_rate)
         
         # A sequence of transformer blocks that form the core of the model
-        self.transformer_blocks = nn.Sequential(*[DummyTransformerBlock() for _ in range(n_layers)])
+        self.transformer_blocks = nn.Sequential(*[TransformerBlock() for _ in range(n_layers)])
 
         # A final layer normalization and linear head for output
-        self.final_norm = LayerNormalize(embedding_dim)
+        self.final_norm = LayerNormalize()
         self.out_head = nn.Linear(embedding_dim, vocab_size, bias= False)
 
     def forward(self, in_idx):
