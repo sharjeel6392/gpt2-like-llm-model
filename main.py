@@ -1,9 +1,9 @@
 import torch
-from src.components.feed_forward import FeedForward
+from src.utility.feed_forward import FeedForward
 from src.constants import *
-from src.components.multi_head_attention import MultiHeadAttention
-from src.components.generate_text import generate_text
-
+from src.utility.multi_head_attention import MultiHeadAttention
+from src.utility.generate_text import generate_text
+import tiktoken
 # ================================================================================
 # Testing the FeedForward module
 # if __name__ == '__main__':
@@ -70,10 +70,29 @@ from src.components.generate_text import generate_text
 # Generating text using the model
 
 
-start_context = "Hello, I am"
-decoded_text = generate_text(
-    start_context= start_context,
-    max_new_tokens = 6,
-)
+# start_context = "Hello, I am"
+# decoded_text = generate_text(
+#     start_context= start_context,
+#     max_new_tokens = 6,
+# )
 
-print(f'Decoded text: \n{decoded_text}')
+# print(f'Decoded text: \n{decoded_text}')
+# ===============================================================================
+
+from src.components.data_ingestion import read_and_load_data
+from src.utility.gpt_model import GPTMODEL
+from src.loss.calc_loss_loader import total_loss
+
+model = GPTMODEL()
+file_path = './data/the_verdict.txt'
+train_loader, validation_loader = read_and_load_data(file_path)
+
+print('Train loader: ')
+for x, y in train_loader:
+    print(x.shape, y.shape)
+
+print('Validation loader: ')
+for x, y in validation_loader:
+    print(x.shape, y.shape)
+
+total_loss(model, train_loader, validation_loader)

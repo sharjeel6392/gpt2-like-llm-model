@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
 from src.constants import vocab_size, embedding_dim, context_length, drop_rate, n_layers
-from src.components.transformer_block import TransformerBlock
-from src.components.layer_normalization import LayerNormalize
+from src.utility.transformer_block import TransformerBlock
+from src.utility.layer_normalization import LayerNormalize
 
 
 

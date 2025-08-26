@@ -1,8 +1,8 @@
 import torch.nn as nn
 from src.constants import *
-from src.components.multi_head_attention import MultiHeadAttention
-from src.components.feed_forward import FeedForward
-from src.components.layer_normalization import LayerNormalize
+from src.utility.multi_head_attention import MultiHeadAttention
+from src.utility.feed_forward import FeedForward
+from src.utility.layer_normalization import LayerNormalize
 
 class TransformerBlock(nn.Module):
     """

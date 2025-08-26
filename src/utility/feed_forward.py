@@ -1,6 +1,6 @@
 import torch.nn as nn
 from src.constants import embedding_dim
-from src.components.gelu import GELU
+from src.helper._gelu import GELU
 
 class FeedForward(nn.Module):
     def __init__(self):
