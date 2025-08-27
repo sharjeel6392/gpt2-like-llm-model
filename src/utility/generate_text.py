@@ -5,7 +5,7 @@ from src.helper._text_to_token_id import text_to_token_ids
 from src.helper._token_id_to_text import token_ids_to_text
 
 
-def generate_text(start_context, max_new_tokens):
+def generate_text(start_context, tokenizer):
     """
     Generate text using the model by predicting one token at a time.
     
@@ -15,7 +15,7 @@ def generate_text(start_context, max_new_tokens):
         idx: Tensor of shape (1, sequence_length) containing the initial input tokens.
         max_new_tokens: The number of new tokens to generate.    
     """
-    encoded_tensor = text_to_token_ids(start_context)
+    encoded_tensor = text_to_token_ids(start_context, tokenizer)
 
     model = GPTMODEL()
     model.eval()
@@ -25,6 +25,6 @@ def generate_text(start_context, max_new_tokens):
         max_new_tokens = 6,
         content_size = context_length
     )
-    decoded_text = token_ids_to_text(out[0].tolist())
+    decoded_text = token_ids_to_text(out[0].tolist(), tokenizer)
 
     return decoded_text

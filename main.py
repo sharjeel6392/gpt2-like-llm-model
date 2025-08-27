@@ -4,6 +4,10 @@ from src.constants import *
 from src.utility.multi_head_attention import MultiHeadAttention
 from src.utility.generate_text import generate_text
 import tiktoken
+from src.components.data_ingestion import read_and_load_data
+from src.utility.gpt_model import GPTMODEL
+from src.loss.calc_loss_loader import total_loss
+from src.components.train_model_simple import train_model_simple
 # ================================================================================
 # Testing the FeedForward module
 # if __name__ == '__main__':
@@ -79,20 +83,37 @@ import tiktoken
 # print(f'Decoded text: \n{decoded_text}')
 # ===============================================================================
 
-from src.components.data_ingestion import read_and_load_data
-from src.utility.gpt_model import GPTMODEL
-from src.loss.calc_loss_loader import total_loss
-
-model = GPTMODEL()
+# model = GPTMODEL()
 file_path = './data/the_verdict.txt'
 train_loader, validation_loader = read_and_load_data(file_path)
 
-print('Train loader: ')
-for x, y in train_loader:
-    print(x.shape, y.shape)
+# print('Train loader: ')
+# for x, y in train_loader:
+#     print(x.shape, y.shape)
 
-print('Validation loader: ')
-for x, y in validation_loader:
-    print(x.shape, y.shape)
+# print('Validation loader: ')
+# for x, y in validation_loader:
+#     print(x.shape, y.shape)
 
-total_loss(model, train_loader, validation_loader)
+# total_loss(model, train_loader, validation_loader)
+
+# =====================================================================================
+
+# ======================================= Training =====================================
+torch.manual_seed(123)
+model = GPTMODEL()
+tokenizer = tiktoken.get_encoding(TOKENIZER)
+device = torch.device('cude' if torch.cuda.is_available() else 'cpu')
+print(f'Device: {device}')
+model.to(device)
+optimizer = torch.optim.AdamW(model.parameters(), lr = 0.0004, weight_decay= 0.1)
+num_epochs = 10
+train_losses, val_losses, tokens_seen = train_model_simple(model= model,
+                                                           train_loader=train_loader, 
+                                                           val_loader= validation_loader, 
+                                                           optimizer= optimizer, 
+                                                           device=device,
+                                                           num_epochs= num_epochs, 
+                                                           eval_freq= 5, eval_iter=5,
+                                                           start_context= 'Every effort moves you', 
+                                                           tokenizer= tokenizer)

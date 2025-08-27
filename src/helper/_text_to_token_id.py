@@ -1,6 +1,5 @@
 import torch
-import tiktoken
-def text_to_token_ids(text: str) -> torch.Tensor:
+def text_to_token_ids(text, tokenizer) -> torch.Tensor:
     """
     Convert input text to a list of token IDs using the provided tokenizer.
 
@@ -14,7 +13,6 @@ def text_to_token_ids(text: str) -> torch.Tensor:
     - encoded_tensor: torch.Tensor
         A tensor containing the token IDs corresponding to the input text.
     """
-    tokenizer = tiktoken.get_encoding("gpt2") # Using GPT-2 tokenizer
     encoded = tokenizer.encode(text, allowed_special={'<|endoftext|>'})
     encoded_tensor = torch.tensor(encoded).unsqueeze(0)
     return encoded_tensor

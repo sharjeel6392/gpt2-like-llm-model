@@ -1,6 +1,7 @@
-import tiktoken
 from src.constants import TOKENIZER
-def token_ids_to_text(token_ids: list[int]) -> str:
+import tiktoken
+
+def token_ids_to_text(token_ids, tokenizer) -> str:
     """
     Convert a list of token IDs back to text using the provided tokenizer.
 
@@ -14,6 +15,6 @@ def token_ids_to_text(token_ids: list[int]) -> str:
     - text: str
         The decoded text corresponding to the input token IDs.
     """
-    tokenizer = tiktoken.get_encoding(TOKENIZER) # Using GPT-2 tokenizer
-    text = tokenizer.decode(token_ids)
+    flat = token_ids.squeeze(0)
+    text = tokenizer.decode(flat.tolist())
     return text

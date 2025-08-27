@@ -75,6 +75,5 @@ class MultiHeadAttention(nn.Module):
 
         context_vec = context_vec.contiguous().view(b, num_tokens, self.d_out)
         context_vec = self.out_proj(context_vec)
-        print(f'Context vector: \n{context_vec}')
 
         return context_vec
