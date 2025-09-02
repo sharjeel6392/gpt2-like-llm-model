@@ -1,7 +1,7 @@
 # Vocabulary size
 vocab_size = 50257
 # Maximum number of input tokens the model can handle via positional embeddings
-context_length = 256
+context_length = 512
 
 # Represents the embedding size. Each embedding is a 768 dimensional vector
 embedding_dim = 768

@@ -8,6 +8,8 @@ from src.components.data_ingestion import read_and_load_data
 from src.utility.gpt_model import GPTMODEL
 from src.loss.calc_loss_loader import total_loss
 from src.components.train_model_simple import train_model_simple
+from src.utility.plot_losses import plot_losses
+from src.utility.getFile import get_file
 # ================================================================================
 # Testing the FeedForward module
 # if __name__ == '__main__':
@@ -84,8 +86,8 @@ from src.components.train_model_simple import train_model_simple
 # ===============================================================================
 
 # model = GPTMODEL()
-file_path = './data/the_verdict.txt'
-train_loader, validation_loader = read_and_load_data(file_path)
+# file_path = './data/the_verdict.txt'
+# train_loader, validation_loader = read_and_load_data(file_path)
 
 # print('Train loader: ')
 # for x, y in train_loader:
@@ -100,14 +102,20 @@ train_loader, validation_loader = read_and_load_data(file_path)
 # =====================================================================================
 
 # ======================================= Training =====================================
+file_name = "metamorphosis.txt"
+file_url = "https://www.gutenberg.org/files/5200/5200-0.txt"
+get_file(file_name, file_url)
+file_path = './data/' + file_name
+train_loader, validation_loader = read_and_load_data(file_path)
+
 torch.manual_seed(123)
 model = GPTMODEL()
 tokenizer = tiktoken.get_encoding(TOKENIZER)
-device = torch.device('cude' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Device: {device}')
 model.to(device)
 optimizer = torch.optim.AdamW(model.parameters(), lr = 0.0004, weight_decay= 0.1)
-num_epochs = 10
+num_epochs = 15
 train_losses, val_losses, tokens_seen = train_model_simple(model= model,
                                                            train_loader=train_loader, 
                                                            val_loader= validation_loader, 
@@ -117,3 +125,6 @@ train_losses, val_losses, tokens_seen = train_model_simple(model= model,
                                                            eval_freq= 5, eval_iter=5,
                                                            start_context= 'Every effort moves you', 
                                                            tokenizer= tokenizer)
+
+epochs_tensor = torch.linspace(0, num_epochs, len(train_losses))
+plot_losses(epochs_tensor, tokens_seen, train_losses, val_losses)

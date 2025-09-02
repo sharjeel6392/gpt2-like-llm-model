@@ -9,6 +9,7 @@ from src.helper.data_loader import create_dataloader_v1
 # create artifacts = train_loader and validation_loader
 # func4: combines all and stores the artifacts
 
+
 def read_and_load_data(filepath):
     tokenizer = tiktoken.get_encoding(TOKENIZER)
     with open(filepath, 'r', encoding = 'utf-8') as file:
