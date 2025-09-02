@@ -123,7 +123,7 @@ train_losses, val_losses, tokens_seen = train_model_simple(model= model,
                                                            device=device,
                                                            num_epochs= num_epochs, 
                                                            eval_freq= 5, eval_iter=5,
-                                                           start_context= 'Every effort moves you', 
+                                                           start_context= 'I am essentially a man of', 
                                                            tokenizer= tokenizer)
 
 epochs_tensor = torch.linspace(0, num_epochs, len(train_losses))

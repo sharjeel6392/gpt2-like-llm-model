@@ -1,7 +1,7 @@
 # Vocabulary size
 vocab_size = 50257
 # Maximum number of input tokens the model can handle via positional embeddings
-context_length = 512
+context_length = 256
 
 # Represents the embedding size. Each embedding is a 768 dimensional vector
 embedding_dim = 768
@@ -27,3 +27,7 @@ TOKENIZER = "gpt2"
 
 # Train-test split
 TRAIN_RATIO = 0.9
+
+TEMPERATIRE = 0.2
+
+TOP_K = 5
