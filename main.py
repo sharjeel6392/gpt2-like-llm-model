@@ -103,13 +103,16 @@ from src.utility.getFile import get_file
 
 # ======================================= Training =====================================
 file_name = "metamorphosis.txt"
-file_url = "https://www.gutenberg.org/files/5200/5200-0.txt"
-get_file(file_name, file_url)
+# file_url = "https://www.gutenberg.org/files/5200/5200-0.txt"
+# get_file(file_name, file_url)
 file_path = './data/' + file_name
 train_loader, validation_loader = read_and_load_data(file_path)
 
+from src.components.load_weights_into_gpt import get_params
+
 torch.manual_seed(123)
 model = GPTMODEL()
+get_params(gpt=model)
 tokenizer = tiktoken.get_encoding(TOKENIZER)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Device: {device}')
@@ -123,7 +126,7 @@ train_losses, val_losses, tokens_seen = train_model_simple(model= model,
                                                            device=device,
                                                            num_epochs= num_epochs, 
                                                            eval_freq= 5, eval_iter=5,
-                                                           start_context= 'I am essentially a man of', 
+                                                           start_context= 'How about if I sleep a little bit longer', 
                                                            tokenizer= tokenizer)
 
 epochs_tensor = torch.linspace(0, num_epochs, len(train_losses))

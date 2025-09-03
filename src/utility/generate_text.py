@@ -3,6 +3,7 @@ from src.utility.gpt_model import GPTMODEL
 from src.helper._generate_text_1 import generate_text_simple
 from src.helper._text_to_token_id import text_to_token_ids
 from src.helper._token_id_to_text import token_ids_to_text
+from src.components.load_weights_into_gpt import get_params
 
 
 def generate_text(start_context, tokenizer):
@@ -16,14 +17,15 @@ def generate_text(start_context, tokenizer):
         max_new_tokens: The number of new tokens to generate.    
     """
     encoded_tensor = text_to_token_ids(start_context, tokenizer)
-
     model = GPTMODEL()
     model.eval()
     out = generate_text_simple(
         model = model,
         idx = encoded_tensor,
         max_new_tokens = 6,
-        content_size = context_length
+        content_size = context_length,
+        top_k=50,
+        temperature=1.5
     )
     decoded_text = token_ids_to_text(out[0].tolist(), tokenizer)
 
